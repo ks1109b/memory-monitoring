@@ -1,0 +1,14 @@
+groups:
+  - name: application-alerts
+    rules:
+      - alert: HighJvmHeapUsage
+        expr: |
+          sum(jvm_memory_used_bytes{area="heap",application="memory-monitoring"})
+          /
+          sum(jvm_memory_max_bytes{area="heap",application="memory-monitoring"}) > 0.75
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "High JVM heap usage"
+          description: "Heap usage is above 75% for at least one minute."
